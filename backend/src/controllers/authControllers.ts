@@ -20,13 +20,13 @@ export const login = async (req: Request, res: Response): Promise<any> => {
     const userInfo = userCheck.rows[0];
 
     if (userCheck.rowCount === 0) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res.status(400).json({ error: "Invalid username or password" });
     }
 
     const passCheck = await bcrypt.compare(password, userInfo.password);
 
     if (!passCheck) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res.status(400).json({ error: "Invalid username or password" });
     }
     const SECRET = process.env.JWT_SECRET as string;
 
@@ -40,7 +40,11 @@ export const login = async (req: Request, res: Response): Promise<any> => {
     );
 
     return res.status(200).json(token);
-  } catch (error) {}
+  } catch (error) {
+    return res.status(500).json({
+      error: "An error occurred while trying to login. Please try again later.",
+    });
+  }
 };
 
 export const register = async (req: Request, res: Response): Promise<any> => {
@@ -50,7 +54,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
     if (!username || !password) {
       return res
         .status(400)
-        .json({ message: "Please enter a Username and Password" });
+        .json({ error: "Please enter a Username and Password" });
     }
 
     const exists = await pool.query(
@@ -61,8 +65,8 @@ export const register = async (req: Request, res: Response): Promise<any> => {
     );
 
     if (exists.rowCount && exists.rowCount > 0) {
-      return res.status(400).json({
-        message: "Username already exists",
+      return res.status(409).json({
+        error: "Username already exists",
       });
     }
 
@@ -81,7 +85,8 @@ export const register = async (req: Request, res: Response): Promise<any> => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      error: "An error occurred while trying to register, Try Again.",
+      error:
+        "An error occurred while trying to register. Please try again later.",
     });
   }
 };
