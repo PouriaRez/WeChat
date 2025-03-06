@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.SERVER_URL;
+const API_URL = import.meta.env.SERVER_URL || "http://localhost:3000";
 
 const API = axios.create({
   baseURL: API_URL,
@@ -36,8 +36,6 @@ API.interceptors.response.use(
       }
 
       console.error("Error: ", errMessage);
-      // Change this alert later with a component.
-      alert(errMessage);
 
       return Promise.reject(error);
     }
