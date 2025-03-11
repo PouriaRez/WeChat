@@ -40,7 +40,7 @@ const AuthPageComponent = ({
           onSubmit={handleFormSubmit}
         >
           <input
-            className="w-75 h-10 p-2 text-2xl m-5"
+            className="w-75 h-10 p-2 text-2xl m-5 border-b-1 border-[#b095c7]"
             type="text"
             name="username"
             placeholder="Username"
@@ -50,7 +50,7 @@ const AuthPageComponent = ({
             }}
           />
           <input
-            className="w-75 h-10 p-2 text-2xl mb-5"
+            className="w-75 h-10 p-2 text-2xl mb-5 border-b-1 border-[#b095c7]"
             type="password"
             name="password"
             placeholder="Password"
